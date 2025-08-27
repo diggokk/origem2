@@ -264,19 +264,3 @@ canvas {
     }
 }
 
-/* Ajustes para modo história */
-.story-container {
-    z-index: 1000;
-}
-
-/* Ajustando a tela de game over para ter mais profundidade */
-#game-over-screen {
-    z-index: 10000;
-}
-
-/* Ajustando os modais para ficarem acima de tudo */
-#galaxy-map, #skill-tree, #skins-modal {
-    z-index: 10001;
-}
-
-/* Adicionando elementos de fundo dinâmicos via JavaScript posteriormente */

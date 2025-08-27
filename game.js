@@ -1810,30 +1810,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000);
 });
 
-function createShootingStar() {
-    const star = document.createElement('div');
-    star.className = 'shooting-star';
-    
-    // Posição aleatória
-    const startY = Math.random() * window.innerHeight * 0.3;
-    star.style.top = `${startY}px`;
-    star.style.left = '0px';
-    
-    // Duração e atraso aleatórios
-    const duration = 2 + Math.random() * 3;
-    star.style.animationDuration = `${duration}s`;
-    star.style.animationDelay = `${Math.random() * 2}s`;
-    
-    // Rotação aleatória
-    const rotation = 30 + Math.random() * 30;
-    star.style.transform = `rotate(${rotation}deg)`;
-    
-    document.body.appendChild(star);
-    
-    // Remover após a animação
-    setTimeout(() => {
-        if (star.parentNode) {
-            star.parentNode.removeChild(star);
-        }
-    }, duration * 1000);
-}
