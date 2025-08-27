@@ -1777,3 +1777,63 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
+// Adicionar elementos de fundo após o carregamento da página
+document.addEventListener('DOMContentLoaded', function() {
+    // Adicionar o sol
+    const sun = document.createElement('div');
+    sun.className = 'sun';
+    document.body.appendChild(sun);
+    
+    // Adicionar estrelas
+    const stars = document.createElement('div');
+    stars.className = 'stars';
+    document.body.appendChild(stars);
+    
+    // Adicionar nebulosas
+    const nebula1 = document.createElement('div');
+    nebula1.className = 'nebula nebula-1';
+    document.body.appendChild(nebula1);
+    
+    const nebula2 = document.createElement('div');
+    nebula2.className = 'nebula nebula-2';
+    document.body.appendChild(nebula2);
+    
+    const nebula3 = document.createElement('div');
+    nebula3.className = 'nebula nebula-3';
+    document.body.appendChild(nebula3);
+    
+    // Adicionar estrelas cadentes ocasionais
+    setInterval(() => {
+        if (Math.random() > 0.7) {
+            createShootingStar();
+        }
+    }, 5000);
+});
+
+function createShootingStar() {
+    const star = document.createElement('div');
+    star.className = 'shooting-star';
+    
+    // Posição aleatória
+    const startY = Math.random() * window.innerHeight * 0.3;
+    star.style.top = `${startY}px`;
+    star.style.left = '0px';
+    
+    // Duração e atraso aleatórios
+    const duration = 2 + Math.random() * 3;
+    star.style.animationDuration = `${duration}s`;
+    star.style.animationDelay = `${Math.random() * 2}s`;
+    
+    // Rotação aleatória
+    const rotation = 30 + Math.random() * 30;
+    star.style.transform = `rotate(${rotation}deg)`;
+    
+    document.body.appendChild(star);
+    
+    // Remover após a animação
+    setTimeout(() => {
+        if (star.parentNode) {
+            star.parentNode.removeChild(star);
+        }
+    }, duration * 1000);
+}

@@ -1,910 +1,282 @@
- :root {
-            --primary: #8E2DE2;
-            --secondary: #4A00E0;
-            --accent: #00F5A0;
-            --accent-secondary: #00D9F5;
-            --dark: #0a0a15;
-            --darker: #05050c;
-            --light: #ffffff;
-            --success: #00F5A0;
-            --warning: #FFCC00;
-            --danger: #FF3366;
-            --glow-primary: 0 0 15px rgba(142, 45, 226, 0.7);
-            --glow-secondary: 0 0 15px rgba(74, 0, 224, 0.7);
-            --glow-accent: 0 0 15px rgba(0, 245, 160, 0.7);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: radial-gradient(ellipse at bottom, var(--darker) 0%, var(--dark) 70%);
-            touch-action: manipulation;
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            color: var(--light);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        /* ===== EFEO DE PARTÍCULAS DE FUNDO ===== */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 5px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
-            background-size: 550px 550px, 350px 350px, 250px 250px;
-            background-position: 0 0, 40px 60px, 130px 270px;
-            z-index: -1;
-            animation: twinkle 8s linear infinite;
-        }
-
-        @keyframes twinkle {
-            from { background-position: 0 0, 40px 60px, 130px 270px; }
-            to { background-position: 550px 550px, 390px 410px, 380px 520px; }
-        }
-
-        /* ===== CANVAS PRINCIPAL ===== */
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-            transition: transform 0.1s;
-            z-index: 1;
-        }
-
-        /* ===== BOTÃO MENU HAMBURGUER ===== */
-        #menu-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: linear-gradient(145deg, var(--secondary), var(--primary));
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--glow-primary);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        #menu-toggle:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 0 20px rgba(142, 45, 226, 0.9);
-        }
-
-        /* ===== MENU LATERAL ===== */
-        #menu {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(10, 10, 21, 0.95);
-            border-radius: 16px;
-            padding: 20px;
-            color: white;
-            display: none;
-            width: 320px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
-                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(74, 0, 224, 0.3);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transform: translateY(-10px);
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        #menu.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #menu h3 {
-            margin-top: 0;
-            color: var(--accent);
-            border-bottom: 1px solid rgba(74, 0, 224, 0.5);
-            padding-bottom: 15px;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
-            margin-bottom: 20px;
-        }
-
-        .menu-section {
-            margin-bottom: 25px;
-        }
-
-        .menu-section h4 {
-            margin-bottom: 15px;
-            color: var(--accent-secondary);
-            font-size: 1.1rem;
-            font-weight: 500;
-            padding-left: 10px;
-            border-left: 3px solid var(--primary);
-        }
-
-        .menu-item {
-            padding: 14px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(74, 0, 224, 0.1);
-            border: 1px solid transparent;
-        }
-
-        .menu-item:hover {
-            background: rgba(74, 0, 224, 0.25);
-            transform: translateX(5px);
-            border-color: rgba(74, 0, 224, 0.3);
-        }
-
-        .menu-item.active {
-            background: linear-gradient(90deg, rgba(74, 0, 224, 0.3), transparent);
-            box-shadow: inset 3px 0 0 var(--primary);
-        }
-
-        .menu-icon {
-            font-size: 1.3rem;
-            width: 28px;
-            text-align: center;
-        }
-
-        .menu-text {
-            flex-grow: 1;
-            font-size: 1rem;
-        }
-
-        .menu-hotkey {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.85rem;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-
-        .menu-status {
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 0.9rem;
-            min-width: 40px;
-            text-align: right;
-        }
-
-        /* ===== CONTROLES MOBILE ===== */
-        .mobile-controls {
-            display: none;
-            position: fixed;
-            bottom: 25px;
-            left: 0;
-            right: 0;
-            justify-content: center;
-            gap: 15px;
-            padding: 15px;
-            z-index: 100;
-        }
-
-        .mobile-btn {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, var(--secondary), var(--primary));
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mobile-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0.2) 0%,
-                rgba(255, 255, 255, 0) 60%
-            );
-            transform: rotate(30deg);
-            transition: all 0.5s;
-        }
-
-        .mobile-btn:active {
-            transform: scale(0.92);
-        }
-
-        .mobile-btn:active::after {
-            left: 100%;
-            top: 100%;
-        }
-
-        .mobile-btn.active {
-            box-shadow: 0 0 20px rgba(142, 45, 226, 0.8),
-                        inset 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-
-        /* ===== BOTÃO BIG BANG ===== */
-        #bigbang-btn {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 240px;
-            height: 70px;
-            border-radius: 35px;
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
-            border: none;
-            color: white;
-            font-size: 1.4rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 10px 25px rgba(142, 45, 226, 0.5),
-                        0 0 0 2px rgba(255, 255, 255, 0.15),
-                        inset 0 0 20px rgba(255, 255, 255, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: var(--transition);
-            overflow: hidden;
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-
-        #bigbang-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0.3) 0%,
-                rgba(255, 255, 255, 0) 60%
-            );
-            transform: rotate(30deg);
-            transition: all 0.5s;
-        }
-
-        #bigbang-btn:hover::before {
-            left: 100%;
-        }
-
-        #bigbang-btn:active {
-            transform: translateX(-50%) scale(0.95);
-            box-shadow: 0 5px 15px rgba(142, 45, 226, 0.5),
-                        0 0 0 2px rgba(255, 255, 255, 0.1),
-                        inset 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-
-        #bigbang-btn span {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        #bigbang-btn .cooldown-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            width: 0%;
-            border-radius: 35px;
-            transition: width 0.1s linear;
-        }
-
-        .bigbang-ready {
-            animation: pulse-ready 2s infinite;
-            box-shadow: 0 0 30px rgba(142, 45, 226, 0.8),
-                        0 0 0 2px rgba(255, 255, 255, 0.2),
-                        inset 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes pulse-ready {
-            0% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(142, 45, 226, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0); }
-        }
-
-        .bigbang-level-requirement {
-            position: absolute;
-            top: -30px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: var(--warning);
-            font-size: 0.9rem;
-            text-shadow: 0 0 8px rgba(255, 204, 0, 0.7);
-            font-weight: 500;
-        }
-
-        /* ===== BARRAS DE STATUS ===== */
-        #health-bar-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 20px;
-            width: 280px;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 50;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        #health-bar {
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, var(--danger), var(--accent));
-            transition: width 0.3s;
-            border-radius: 10px;
-        }
-
-        #xp-bar-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 28px;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            border-top: 1px solid rgba(74, 0, 224, 0.3);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        #xp-bar {
-            height: 70%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            transition: width 0.3s;
-            border-radius: 4px;
-            box-shadow: var(--glow-accent);
-        }
-
-        #xp-text {
-            color: white;
-            margin-left: 15px;
-            font-size: 0.9rem;
-            font-family: 'Roboto Mono', monospace;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-            font-weight: 500;
-        }
-
-        #bigbang-cooldown {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 14px;
-            width: 220px;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 50;
-            border-radius: 7px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        #bigbang-progress {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--accent-secondary));
-            transition: width 0.1s;
-            border-radius: 7px;
-        }
-
-        /* ===== PAINEL DE ESTATÍSTICAS ===== */
-        #stats-panel {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(10, 10, 21, 0.8);
-            padding: 15px 20px;
-            border-radius: 12px;
-            color: white;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.9rem;
-            z-index: 50;
-            border: 1px solid rgba(74, 0, 224, 0.3);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            max-width: 200px;
-        }
-
-        #stats-panel div {
-            margin: 8px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        #stats-panel span {
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        /* ===== CONTADOR DE FPS ===== */
-        #fps-counter {
-            position: fixed;
-            top: 20px;
-            right: 85px;
-            color: white;
-            background: rgba(10, 10, 21, 0.8);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.85rem;
-            border: 1px solid rgba(74, 0, 224, 0.3);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        /* ===== PAINEL DE MISSÕES ===== */
-        #quest-panel {
-            position: fixed;
-            top: 170px;
-            left: 20px;
-            background: rgba(10, 10, 21, 0.8);
-            padding: 15px;
-            border-radius: 12px;
-            color: white;
-            font-size: 0.9rem;
-            max-width: 220px;
-            border-left: 3px solid var(--primary);
-            z-index: 50;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        #quest-panel h4 {
-            color: var(--accent-secondary);
-            margin-bottom: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-bottom: 1px solid rgba(74, 0, 224, 0.3);
-            padding-bottom: 8px;
-        }
-
-        .quest-item {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 8px;
-            background: rgba(74, 0, 224, 0.15);
-            border: 1px solid rgba(74, 0, 224, 0.2);
-        }
-
-        .quest-progress {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            margin-top: 8px;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .quest-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            width: 0%;
-            transition: width 0.3s;
-            border-radius: 3px;
-        }
-
-        /* ===== MODAIS (GALÁXIAS, HABILIDADES, SKINS) ===== */
-        #galaxy-map, #skill-tree, #skins-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: rgba(10, 10, 21, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            color: white;
-            z-index: 1000;
-            text-align: center;
-            max-width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(74, 0, 224, 0.3);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        }
-
-        #galaxy-map.show, #skill-tree.show, #skins-modal.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        #galaxy-map h2, #skill-tree h2, .skins-modal-content h2 {
-            color: var(--accent);
-            margin-top: 0;
-            font-size: 2rem;
-            text-shadow: 0 0 15px rgba(0, 245, 160, 0.5);
-            margin-bottom: 25px;
-            font-weight: 700;
-        }
-
-        .galaxy, .skill {
-            background: rgba(74, 0, 224, 0.15);
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 12px;
-            border: 1px solid rgba(74, 0, 224, 0.3);
-            transition: var(--transition);
-            text-align: left;
-        }
-
-        .galaxy.unlocked, .skill.unlocked {
-            background: rgba(74, 0, 224, 0.25);
-            border-color: var(--primary);
-            cursor: pointer;
-        }
-
-        .galaxy.unlocked:hover, .skill.unlocked:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(74, 0, 224, 0.3);
-        }
-
-        .galaxy.locked, .skill.locked {
-            opacity: 0.6;
-            background: rgba(50, 50, 50, 0.2);
-            cursor: not-allowed;
-        }
-
-        .galaxy h3, .skill h3 {
-            margin: 0 0 10px 0;
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .galaxy p, .skill p {
-            margin: 8px 0;
-            color: #ccc;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .upgrade-btn {
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            margin-top: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .upgrade-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(74, 0, 224, 0.4);
-        }
-
-        .skill-cost {
-            color: var(--accent);
-            font-weight: 600;
-            margin: 5px 0;
-        }
-
-        .skill-requires {
-            color: var(--danger);
-            font-size: 0.9em;
-            margin: 5px 0;
-        }
-
-        button {
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            margin-top: 20px;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(74, 0, 224, 0.4);
-        }
-
-        /* ===== TELA DE GAME OVER ===== */
-        #game-over-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, 
-                rgba(139, 0, 139, 0.9) 0%, 
-                rgba(0, 0, 80, 0.95) 100%);
-            z-index: 10000;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .game-over-title {
-            font-size: 5rem;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 25px #ff00ff, 
-                         0 0 45px #00ffff;
-            animation: pulse 2s infinite alternate;
-            font-weight: 800;
-            letter-spacing: 2px;
-        }
-
-        .game-over-stats {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(142, 45, 226, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            min-width: 400px;
-        }
-
-        .game-over-stats h2 {
-            color: var(--accent);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .game-over-stats p {
-            margin: 12px 0;
-            font-size: 1.2rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .game-over-stats span {
-            color: var(--accent-secondary);
-            font-weight: 600;
-        }
-
-        .restart-btn {
-            background: linear-gradient(145deg, var(--primary), var(--accent-secondary));
-            border: none;
-            color: white;
-            padding: 18px 50px;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3),
-                        inset 0 0 15px rgba(255, 255, 255, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: bold;
-        }
-
-        .restart-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.4),
-                        inset 0 0 20px rgba(255, 255, 255, 0.4);
-        }
-
-        /* ===== EFEITOS ESPECIAIS ===== */
-        #big-bang-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 3.5rem;
-            text-align: center;
-            text-shadow: 0 0 15px #ff00ff, 
-                         0 0 25px #00ffff,
-                         0 0 35px #ffffff;
-            z-index: 10000;
-            opacity: 0;
-            transition: opacity 0.5s;
-            font-weight: bold;
-            pointer-events: none;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        #supernova {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            background: radial-gradient(circle, 
-                rgba(255,255,255,0.9) 0%, 
-                rgba(255,200,0,0.8) 20%, 
-                rgba(255,0,100,0.7) 40%, 
-                rgba(100,0,255,0.5) 60%, 
-                rgba(0,0,0,0) 80%);
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        #shockwave {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            z-index: 9998;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        /* ===== RESPONSIVIDADE ===== */
-        @media (max-width: 768px) {
-            .mobile-controls {
-                display: flex;
-            }
-            
-            #menu {
-                width: 90%;
-                right: 5%;
-                left: 5%;
-            }
-            
-            #bigbang-btn {
-                width: 200px;
-                height: 60px;
-                font-size: 1.2rem;
-                bottom: 100px;
-            }
-            
-            #health-bar-container {
-                width: 240px;
-                height: 18px;
-                top: 15px;
-            }
-            
-            #bigbang-cooldown {
-                width: 200px;
-                bottom: 170px;
-            }
-            
-            #xp-bar-container {
-                height: 24px;
-                padding: 0 15px;
-            }
-            
-            #xp-text {
-                font-size: 0.8rem;
-            }
-            
-            .game-over-title {
-                font-size: 3.5rem;
-            }
-            
-            .restart-btn {
-                padding: 15px 40px;
-                font-size: 1.2rem;
-            }
-            
-            #stats-panel {
-                top: 70px;
-                left: 15px;
-                max-width: 180px;
-                font-size: 0.8rem;
-                padding: 12px 15px;
-            }
-            
-            #quest-panel {
-                top: 250px;
-                left: 15px;
-                max-width: 200px;
-                padding: 12px;
-            }
-            
-            #fps-counter {
-                top: 15px;
-                right: 70px;
-                font-size: 0.8rem;
-                padding: 5px 10px;
-            }
-            
-            #menu-toggle {
-                top: 15px;
-                right: 15px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.3rem;
-            }
-        }
-
-        /* ===== ANIMAÇÕES ===== */
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
-        }
-
-        @keyframes supernova-explosion {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
-        }
-
-        @keyframes shockwave {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; width: 10px; height: 10px; }
-            100% { transform: translate(-50%, -50%) scale(20); opacity: 0; width: 100px; height: 100px; }
-        }
-
-        @keyframes cameraShake {
-            0%, 100% { transform: translate(0, 0); }
-            10%, 30%, 50%, 70%, 90% { transform: translate(-10px, -10px); }
-            20%, 40%, 60%, 80% { transform: translate(10px, 10px); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
+/* ===== FUNDO ESTELAR COM PLANETA E SOL ===== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 5px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    z-index: -2;
+    animation: twinkle 8s linear infinite;
+}
+
+/* Planeta no fundo */
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -150px;
+    right: -150px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle at 30% 30%, 
+        #4a6fa5 0%, 
+        #3a5a8a 20%,
+        #2a4a75 40%,
+        #1a3a60 60%,
+        #0a2a4a 80%);
+    border-radius: 50%;
+    box-shadow: 
+        inset -20px -20px 40px rgba(0, 0, 0, 0.7),
+        inset 10px 10px 30px rgba(255, 255, 255, 0.2),
+        0 0 50px rgba(74, 111, 165, 0.6);
+    z-index: -1;
+    opacity: 0.7;
+    animation: float 25s infinite alternate ease-in-out;
+}
+
+/* Sol no canto superior esquerdo */
+.sun {
+    position: fixed;
+    top: -100px;
+    left: -100px;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle at 35% 35%, 
+        #fff9c4 0%, 
+        #ffeb3b 15%,
+        #ffc107 30%,
+        #ff9800 45%,
+        #ff5722 60%,
+        #f44336 75%);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 100px rgba(255, 235, 59, 0.8),
+        0 0 150px rgba(255, 193, 7, 0.6),
+        0 0 200px rgba(255, 152, 0, 0.4);
+    z-index: -1;
+    animation: pulseSun 8s infinite alternate;
+}
+
+/* Adicionando mais estrelas com diferentes tamanhos e brilhos */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+}
+
+.stars::before, .stars::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, white, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40% 70%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 60% 80%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 80% 10%, white, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 10% 90%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 90% 40%, white, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 70% 20%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 30% 60%, white, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50% 50%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 15% 25%, white, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: twinkle 7s infinite;
+    opacity: 0.7;
+}
+
+.stars::after {
+    background-image: 
+        radial-gradient(2px 2px at 15% 65%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 75% 35%, white, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 25% 15%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 85% 85%, white, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 55% 45%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 95% 5%, white, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 5% 95%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 65% 75%, white, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 35% 55%, white, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 45% 25%, white, rgba(0,0,0,0));
+    animation-delay: 3.5s;
+}
+
+/* Adicionando algumas estrelas cadentes ocasionais */
+@keyframes shootingStar {
+    0% {
+        transform: translateX(-100px) translateY(-100px) rotate(45deg);
+        opacity: 0;
+        width: 0;
+    }
+    10% {
+        opacity: 1;
+        width: 100px;
+    }
+    100% {
+        transform: translateX(100vw) translateY(100vh) rotate(45deg);
+        opacity: 0;
+        width: 0;
+    }
+}
+
+.shooting-star {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+    animation: shootingStar 3s linear infinite;
+    opacity: 0;
+    z-index: -2;
+}
+
+/* Adicionando nebulosas para um efeito mais espacial */
+.nebula {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.1;
+    z-index: -2;
+}
+
+.nebula-1 {
+    top: 20%;
+    right: 10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #4a00e0, transparent 70%);
+    animation: floatNebula 30s infinite alternate;
+}
+
+.nebula-2 {
+    bottom: 30%;
+    left: 15%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #8e2de2, transparent 70%);
+    animation: floatNebula 40s infinite alternate-reverse;
+}
+
+.nebula-3 {
+    top: 60%;
+    right: 30%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, #00d9f5, transparent 70%);
+    animation: floatNebula 35s infinite alternate;
+}
+
+/* ===== ANIMAÇÕES PERSONALIZADAS ===== */
+@keyframes pulseSun {
+    0%, 100% {
+        box-shadow: 
+            0 0 100px rgba(255, 235, 59, 0.8),
+            0 0 150px rgba(255, 193, 7, 0.6),
+            0 0 200px rgba(255, 152, 0, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 
+            0 0 120px rgba(255, 235, 59, 0.9),
+            0 0 180px rgba(255, 193, 7, 0.7),
+            0 0 250px rgba(255, 152, 0, 0.5);
+        transform: scale(1.05);
+    }
+}
+
+@keyframes floatNebula {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(20px, -20px) scale(1.1);
+    }
+}
+
+/* Ajustando o z-index do canvas para ficar acima dos elementos de fundo */
+canvas {
+    z-index: 1;
+}
+
+/* Ajustando a barra de progresso do Big Bang para ficar mais visível */
+#bigbang-cooldown {
+    z-index: 100;
+}
+
+/* Ajustando a mensagem do Big Bang para ter mais destaque */
+#big-bang-message {
+    z-index: 10001;
+    text-shadow: 
+        0 0 10px #ff00ff, 
+        0 0 20px #ff00ff,
+        0 0 30px #ff00ff,
+        0 0 40px #ff00ff;
+    animation: bigBangPulse 1.5s infinite alternate;
+}
+
+@keyframes bigBangPulse {
+    from {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+/* Ajustando a supernova para ter mais impacto visual */
+#supernova {
+    z-index: 10000;
+}
+
+/* Ajustando a onda de choque para ser mais visível */
+#shockwave {
+    z-index: 9999;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Ajustando o NPC cósmico para combinar com o tema */
+#cosmic-npc .npc-face {
+    text-shadow: 0 0 15px var(--accent);
+    animation: npcPulse 3s infinite alternate;
+}
+
+@keyframes npcPulse {
+    from {
+        transform: scale(1);
+        text-shadow: 0 0 10px var(--accent);
+    }
+    to {
+        transform: scale(1.1);
+        text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent-secondary);
+    }
+}
+
+/* Ajustes para modo história */
+.story-container {
+    z-index: 1000;
+}
+
+/* Ajustando a tela de game over para ter mais profundidade */
+#game-over-screen {
+    z-index: 10000;
+}
+
+/* Ajustando os modais para ficarem acima de tudo */
+#galaxy-map, #skill-tree, #skins-modal {
+    z-index: 10001;
+}
+
+/* Adicionando elementos de fundo dinâmicos via JavaScript posteriormente */
