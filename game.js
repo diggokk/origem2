@@ -1576,53 +1576,113 @@ function render() {
         });
         
         // Desenha jogador 1
-        // Desenha jogador 1 como planeta
-const player = config.players[0];
-drawPlayer(player);
-// No seu código, substitua a função que desenha o jogador
-function drawPlayer(player) {
+        // Adicione esta função para desenhar o buraco negro
+function drawBlackHole(player) {
     const { x, y, size } = player;
     
-    // Desenha o planeta Terra
     ctx.save();
     
-    // Cria um gradiente para o planeta
-    const gradient = ctx.createRadialGradient(
-        x - size/3, y - size/3, size/10,
+    // 1. Disco de acreção (parte externa brilhante)
+    const accretionGradient = ctx.createRadialGradient(
+        x, y, size * 0.7,
+        x, y, size * 1.5
+    );
+    accretionGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    accretionGradient.addColorStop(0.3, 'rgba(70, 0, 100, 0.8)');
+    accretionGradient.addColorStop(0.6, 'rgba(255, 100, 0, 0.9)');
+    accretionGradient.addColorStop(0.8, 'rgba(255, 215, 0, 0.7)');
+    accretionGradient.addColorStop(1, 'rgba(255, 255, 255, 0.5)');
+    
+    ctx.fillStyle = accretionGradient;
+    ctx.beginPath();
+    ctx.arc(x, y, size * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // 2. Anéis concêntricos de energia
+    for (let i = 0; i < 3; i++) {
+        const ringSize = size * (0.9 + i * 0.2);
+        ctx.strokeStyle = `rgba(255, ${100 + i * 50}, 0, 0.6)`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(x, y, ringSize, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+    
+    // 3. Singularidade (buraco negro propriamente dito)
+    const blackHoleGradient = ctx.createRadialGradient(
+        x, y, 0,
         x, y, size
     );
+    blackHoleGradient.addColorStop(0, '#000000');
+    blackHoleGradient.addColorStop(0.7, '#220033');
+    blackHoleGradient.addColorStop(1, '#000000');
     
-    gradient.addColorStop(0, '#2b6c8c');    // Azul claro (reflexo)
-    gradient.addColorStop(0.3, '#0d3b5b');  // Azul oceano
-    gradient.addColorStop(0.6, '#1c5c2c');  // Verde terra
-    gradient.addColorStop(0.8, '#3e2812');  // Marrom terra
-    gradient.addColorStop(1, '#0d3b5b');    // Azul escuro
-    
-    // Desenha o círculo do planeta
-    ctx.fillStyle = gradient;
+    ctx.fillStyle = blackHoleGradient;
     ctx.beginPath();
     ctx.arc(x, y, size, 0, Math.PI * 2);
     ctx.fill();
     
-    // Adiciona atmosfera/brilho
+    // 4. Efeito de distorção gravitacional (lente)
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(x, y, size + 2, 0, Math.PI * 2);
-    ctx.stroke();
+    ctx.lineWidth = 1;
+    for (let i = 1; i <= 4; i++) {
+        ctx.beginPath();
+        ctx.arc(x, y, size * (1 + i * 0.3), 0, Math.PI * 2);
+        ctx.stroke();
+    }
     
-    // Adiciona detalhes (nuvens)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.beginPath();
-    ctx.arc(x - size/3, y - size/4, size/4, 0, Math.PI * 2);
-    ctx.fill();
+    // 5. Partículas espirais sendo sugadas (efeito dinâmico)
+    const time = Date.now() / 1000;
+    for (let i = 0; i < 8; i++) {
+        const angle = time + (i * Math.PI / 4);
+        const distance = size * 1.8;
+        const particleX = x + Math.cos(angle) * distance;
+        const particleY = y + Math.sin(angle) * distance;
+        
+        ctx.fillStyle = `rgba(255, ${150 + i * 10}, 0, 0.8)`;
+        ctx.beginPath();
+        ctx.arc(particleX, particleY, 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Linha espiral
+        ctx.strokeStyle = `rgba(255, ${150 + i * 10}, 0, 0.4)`;
+        ctx.beginPath();
+        ctx.moveTo(particleX, particleY);
+        ctx.lineTo(x + Math.cos(angle) * size * 0.2, y + Math.sin(angle) * size * 0.2);
+        ctx.stroke();
+    }
     
+    // 6. Brilho central intenso
+    const glowGradient = ctx.createRadialGradient(
+        x, y, size * 0.3,
+        x, y, size * 0.8
+    );
+    glowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+    glowGradient.addColorStop(0.5, 'rgba(255, 100, 0, 0.4)');
+    glowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    
+    ctx.fillStyle = glowGradient;
     ctx.beginPath();
-    ctx.arc(x + size/3, y + size/5, size/5, 0, Math.PI * 2);
+    ctx.arc(x, y, size * 0.8, 0, Math.PI * 2);
     ctx.fill();
     
     ctx.restore();
 }
+
+// Modifique a função de renderização para usar o buraco negro
+// Substitua esta parte no seu código de renderização:
+const player = config.players[0];
+// ctx.fillStyle = player.color;
+// ctx.beginPath();
+// ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+// ctx.fill();
+// ctx.font = `${player.faceSize}px Arial`;
+// ctx.textAlign = 'center';
+// ctx.textBaseline = 'middle';
+// ctx.fillText(player.face, player.x, player.y);
+
+// Use isto em vez do código acima:
+drawBlackHole(player);
         
         // Desenha jogador 2 se o modo coop estiver ativo
         if (config.coopMode && config.players[1].active) {
