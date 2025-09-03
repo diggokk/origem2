@@ -59,7 +59,7 @@ const config = {
             color: '#4A00E0',
             radius: 150,
             size: 30,
-            face: "🐶",
+            face: " ",
             faceSize: 28,
             power: 1,
             health: 100,
@@ -83,7 +83,7 @@ const config = {
             color: '#00F5A0',
             radius: 150,
             size: 30,
-            face: "🐱",
+            face: " ",
             faceSize: 28,
             power: 1,
             health: 100,
@@ -226,38 +226,6 @@ const config = {
             }
         }
     },
-    skillPoints: 0,
-    story: {
-        enabled: true,
-        currentScene: 0,
-        scenes: [
-            {
-                npc: "👁️",
-                text: "MORTAL... VOCÊ OUSA INVADIR MEU UNIVERSO?",
-                background: "radial-gradient(ellipse at center, #200122 0%, #6f0000 100%)",
-                effect: "terror" // Ativa modo terror
-            },
-            {
-                npc: "👁️",
-                text: "EU SOU AZATHOTH, O DEVORADOR DE GALÁXIAS...",
-                background: "radial-gradient(ellipse at center, #000000 0%, #4a0000 100%)",
-                effect: "terror"
-            },
-            {
-                npc: "👽",
-                text: "*sussurro* Psst... Não olhe diretamente para ele! Use as partículas para se fortalecer...",
-                background: "radial-gradient(ellipse at center, #1B2735 0%, #090A0F 100%)",
-                effect: "normal"
-            },
-            {
-                npc: "👁️",
-                text: "SEU DESTINO É SER DESTRUÍDO COMO TODOS OS OUTROS!",
-                background: "radial-gradient(ellipse at center, #300000 0%, #000000 100%)",
-                effect: "terror",
-                shake: true // Ativa tremor de tela
-            }
-        ]
-    },
     npc: {
         active: true,
         currentDialog: 0,
@@ -272,7 +240,6 @@ const config = {
             "Já tentou o Big Bang? Ou ainda não é digno?",
             "Os inimigos estão rindo de você... literalmente.",
             "Você é lento... mas pelo menos é consistente.",
-            // NOVOS DIÁLOGOS ADICIONADOS:
             "Sabia que cada galáxia tem suas próprias leis da física? Divertido, né?",
             "Eu já vi jogadores melhores... mas também vi piores.",
             "Quer um conselho? Não confie nas partículas roxas.",
@@ -1609,16 +1576,53 @@ function render() {
         });
         
         // Desenha jogador 1
-        const player = config.players[0];
-        ctx.fillStyle = player.color;
-        ctx.beginPath();
-        ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
-        ctx.fill();
-        
-        ctx.font = `${player.faceSize}px Arial`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(player.face, player.x, player.y);
+        // Desenha jogador 1 como planeta
+const player = config.players[0];
+drawPlayer(player);
+// No seu código, substitua a função que desenha o jogador
+function drawPlayer(player) {
+    const { x, y, size } = player;
+    
+    // Desenha o planeta Terra
+    ctx.save();
+    
+    // Cria um gradiente para o planeta
+    const gradient = ctx.createRadialGradient(
+        x - size/3, y - size/3, size/10,
+        x, y, size
+    );
+    
+    gradient.addColorStop(0, '#2b6c8c');    // Azul claro (reflexo)
+    gradient.addColorStop(0.3, '#0d3b5b');  // Azul oceano
+    gradient.addColorStop(0.6, '#1c5c2c');  // Verde terra
+    gradient.addColorStop(0.8, '#3e2812');  // Marrom terra
+    gradient.addColorStop(1, '#0d3b5b');    // Azul escuro
+    
+    // Desenha o círculo do planeta
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Adiciona atmosfera/brilho
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(x, y, size + 2, 0, Math.PI * 2);
+    ctx.stroke();
+    
+    // Adiciona detalhes (nuvens)
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.beginPath();
+    ctx.arc(x - size/3, y - size/4, size/4, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.arc(x + size/3, y + size/5, size/5, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.restore();
+}
         
         // Desenha jogador 2 se o modo coop estiver ativo
         if (config.coopMode && config.players[1].active) {
