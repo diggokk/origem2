@@ -1579,6 +1579,7 @@ function render() {
         // Adicione esta função para desenhar o buraco negro
 function drawBlackHole(player) {
     const { x, y, size } = player;
+    const time = Date.now() / 1000; // Para animações baseadas no tempo
     
     ctx.save();
     
@@ -1632,7 +1633,6 @@ function drawBlackHole(player) {
     }
     
     // 5. Partículas espirais sendo sugadas (efeito dinâmico)
-    const time = Date.now() / 1000;
     for (let i = 0; i < 8; i++) {
         const angle = time + (i * Math.PI / 4);
         const distance = size * 1.8;
@@ -1668,10 +1668,7 @@ function drawBlackHole(player) {
     
     ctx.restore();
 }
-
-// Modifique a função de renderização para usar o buraco negro
-// Substitua esta parte no seu código de renderização:
-const player = config.players[0];
+// No lugar deste código:
 // ctx.fillStyle = player.color;
 // ctx.beginPath();
 // ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
@@ -1681,7 +1678,7 @@ const player = config.players[0];
 // ctx.textBaseline = 'middle';
 // ctx.fillText(player.face, player.x, player.y);
 
-// Use isto em vez do código acima:
+// Use isto:
 drawBlackHole(player);
         
         // Desenha jogador 2 se o modo coop estiver ativo
