@@ -143,14 +143,14 @@ const config = {
                 chance: 0.5, 
                 speed: 2.0, 
                 behavior: 'wander', 
-                face: [">:(", "X_X", ">_<", ":O"],
+                face: [" ", " ", " ", " "],
                 color: '#FF5555'
             },
             hunter: { 
                 chance: 0.3, 
                 speed: 3.0, 
                 behavior: 'hunt', 
-                face: ["ಠ_ಠ", "◉_◉", "⊙_⊙", "⚆_⚆"],
+                face: [" ", " ", " ", " "],
                 color: '#FF0000',
                 huntRadius: 300
             },
